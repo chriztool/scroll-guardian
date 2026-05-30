@@ -7,7 +7,12 @@ workflows:
     scripts:
       - name: Get Flutter packages
         script: flutter pub get
-      - name: Build unsigned IPA
-        script: flutter build ipa --no-codesign
+      - name: Build unsigned iOS app
+        script: flutter build ios --no-codesign --release
+      - name: Package into IPA
+        script: |
+          mkdir -p Payload
+          cp -r build/ios/iphoneos/Runner.app Payload/Runner.app
+          zip -r scroll-guardian-unsigned.ipa Payload
     artifacts:
-      - build/ios/ipa/*.ipa
+      - scroll-guardian-unsigned.ipa
